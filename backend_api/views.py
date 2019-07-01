@@ -1,10 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.viewsets import ViewSet
+from rest_framework import viewsets # import ViewSet, ModelViewSet
+from rest_framework.authentication import TokenAuthentication
 
 
 from backend_api import serializers
+from backend_api import models
+from backend_api import permissions
 
 
 class TestAPIView(APIView):
@@ -51,7 +54,7 @@ class TestAPIView(APIView):
 
 
 
-class TestViewSet(ViewSet):
+class TestViewSet(viewsets.ViewSet):
     """Testing ViewSet for API"""
     serializer_class = serializers.TestSerializer
 
@@ -96,3 +99,11 @@ class TestViewSet(ViewSet):
     def destroy(self, request, pk = None):
         """Deleting an Object"""
         return Response({'http_method': 'DELETE'})
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handles create and update user profile"""
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all() # Contains All actions for the Viewset - Django framework Handles it.
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
