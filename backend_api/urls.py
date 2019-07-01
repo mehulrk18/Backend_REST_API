@@ -7,6 +7,7 @@ from backend_api import views
 router = DefaultRouter()
 router.register('testviewset', views.TestViewSet, base_name='testviewset')
 router.register('profile', views.UserProfileViewSet)
+router.register('feed', views.ProfileFeedItemViewSet)
 
 urlpatterns = [
     path('testapiview/', views.TestAPIView.as_view()),
